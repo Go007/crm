@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.kaishengit.mapper.SalesFileMapper">
+
+    <cache/>
+    <delete id="del">
+        DELETE FROM t_sales_file WHERE id in(
+        <foreach collection="list" separator="," item="file">
+            #{file.id}
+        </foreach>
+        )
+    </delete>
+
+    <select id="findBySalesId" resultType="SalesFile">
+        SELECT * FROM t_sales_file WHERE salesid = #{salesId} order by id desc
+    </select>
+
+    <select id="findById" resultType="SalesFile">
+        SELECT * FROM t_sales_file WHERE id = #{id}
+    </select>
+
+    <insert id="save">
+        insert INTO t_sales_file( name, filename, contenttype, `size`, salesid)
+        VALUES (#{name},#{filename},#{contenttype},#{size},#{salesid})
+    </insert>
+
+</mapper>

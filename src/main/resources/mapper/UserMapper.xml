@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kaishengit.mapper.UserMapper">
+
+    <cache/>
+    <insert id="save">
+        INSERT  INTO t_user(username, password, realname, weixin, enable)
+        VALUES (#{username},#{password},#{realname},#{weixin},#{enable})
+    </insert>
+
+    <insert id="saveUserAndRole">
+        INSERT INTO role_user(userid,roleid) VALUES
+        <foreach collection="param2" item="roleId" separator=",">
+            (#{param1.id},#{roleId})
+        </foreach>
+    </insert>
+
+    <update id="updateUser">
+        UPDATE t_user
+        <set>
+            <if test="password != null and password != ''">
+                password = #{password},
+            </if>
+            <if test="realname != null and realname != ''">
+                realname = #{realname},
+            </if>
+            <if test="weixin != null and weixin != ''">
+                weixin = #{weixin},
+            </if>
+            enable=#{enable}
+        </set>
+        where id = #{id}
+    </update>
+
+    <delete id="delUserAndRole">
+        DELETE FROM role_user WHERE userid = #{id}
+    </delete>
+
+    <select id="findByUsername" resultType="User">
+        SELECT * FROM t_user WHERE t_user.username = #{username}
+    </select>
+
+    <select id="findByParam" resultMap="userMap">
+        SELECT  u.*,
+                r.id AS roleid,
+                r.rolename
+        FROM  t_user AS u
+        LEFT JOIN role_user AS ru ON ru.userid = u.id
+        LEFT JOIN t_role AS r ON ru.roleid = r.id
+        <where>
+            <if test="keyword != null and keyword != ''">
+                username LIKE concat('%',#{keyword},'%') or realname  like concat('%',#{keyword},'%')
+            </if>
+        </where>
+        order by u.id desc
+        limit ${start},${length}
+    </select>
+    <select id="count" resultType="java.lang.Long">
+        SELECT count(*) FROM t_user
+    </select>
+    <select id="countByParam" resultType="java.lang.Long">
+        SELECT count(*) FROM t_user
+        <where>
+            <if test="keyword != null and keyword != ''">
+                username LIKE concat('%',#{keyword},'%') or realname  like concat('%',#{keyword},'%')
+            </if>
+        </where>
+    </select>
+    <select id="findById" resultType="com.kaishengit.pojo.User">
+        SELECT * FROM t_user WHERE id = #{id}
+    </select>
+    <select id="findAll" resultType="com.kaishengit.pojo.User">
+        SELECT * FROM t_user
+    </select>
+
+    <select id="findUserWithRoleById" resultType="com.kaishengit.pojo.User" resultMap="userMap">
+        SELECT u.*,
+               r.id AS roleid,
+               r.rolename
+        FROM  t_user AS u
+        LEFT JOIN role_user AS ru ON ru.userid = u.id
+        LEFT JOIN t_role AS r ON ru.roleid = r.id
+        WHERE u.id = #{id}
+    </select>
+
+    <select id="findUserWithRoleList" resultType="com.kaishengit.pojo.User" resultMap="userMap">
+        SELECT u.*,r.id AS roleid,
+        r.rolename
+        FROM  t_user AS u
+        LEFT JOIN role_user AS ru ON ru.userid = u.id
+        LEFT JOIN t_role AS r ON ru.roleid = r.id
+        <foreach collection="param1" item="user" separator=",">
+            (#{user.id})
+        </foreach>
+    </select>
+
+    <resultMap id="userMap" type="User">
+        <id column="id" property="id"/>
+        <result column="username" property="username"/>
+        <result column="realname" property="realname"></result>
+        <result column="weixin" property="weixin"></result>
+        <result property="password" column="password"/>
+        <result property="createtime" column="createtime"/>
+        <result property="enable" column="enable"/>
+        <collection property="roleList" ofType="Role">
+            <id property="id" column="roleid"/>
+            <result property="rolename" column="rolename"/>
+        </collection>
+    </resultMap>
+
+    <resultMap id="userMap2" type="User">
+        <id column="id" property="id"/>
+        <result column="username" property="username"/>
+        <result property="password" column="password"/>
+        <result property="createtime" column="createtime"/>
+        <result property="tel" column="tel"/>
+        <result property="state" column="state"/>
+        <collection property="roleList" ofType="Role" column="id" select="com.kaishengit.mapper.RoleMapper.findByUserId"/>
+    </resultMap>
+</mapper>

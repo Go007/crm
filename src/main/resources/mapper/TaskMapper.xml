@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.kaishengit.mapper.TaskMapper">
+
+    <cache/>
+
+    <insert id="save" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO t_task(title, start, `end`, color, remindertime, custid, salesid, userid)
+        VALUES (#{title},#{start},#{end},#{color},#{remindertime},#{custid},#{salesid},#{userid})
+    </insert>
+    <update id="update">
+        UPDATE t_task SET done = #{done},color=#{color} where id = #{id}
+    </update>
+    <delete id="del">
+        DELETE FROM t_task WHERE id = #{id}
+    </delete>
+
+    <select id="findByUserId" resultType="Task">
+        SELECT * FROM t_task WHERE userid = #{userId} and done = 0
+    </select>
+    <select id="findTimeOutTask" resultType="com.kaishengit.pojo.Task">
+        SELECT * FROM t_task WHERE userid = #{userId} and date(`end`) &lt; #{today} and done = 0
+    </select>
+    <select id="findByUserIdAndDateRanger" resultType="com.kaishengit.pojo.Task">
+        SELECT * FROM t_task WHERE userid = #{userId} and date(start) >= #{start} and date(`end`) &lt;= #{end}
+    </select>
+    <select id="findById" resultType="com.kaishengit.pojo.Task">
+        select * from t_task WHERE id = #{id};
+    </select>
+
+</mapper>
