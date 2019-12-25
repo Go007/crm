@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.kaishengit.mapper.TaskMapper">
+<mapper namespace="com.hong.mapper.TaskMapper">
 
     <cache/>
 
@@ -18,13 +18,13 @@
     <select id="findByUserId" resultType="Task">
         SELECT * FROM t_task WHERE userid = #{userId} and done = 0
     </select>
-    <select id="findTimeOutTask" resultType="com.kaishengit.pojo.Task">
+    <select id="findTimeOutTask" resultType="com.hong.pojo.Task">
         SELECT * FROM t_task WHERE userid = #{userId} and date(`end`) &lt; #{today} and done = 0
     </select>
-    <select id="findByUserIdAndDateRanger" resultType="com.kaishengit.pojo.Task">
+    <select id="findByUserIdAndDateRanger" resultType="com.hong.pojo.Task">
         SELECT * FROM t_task WHERE userid = #{userId} and date(start) >= #{start} and date(`end`) &lt;= #{end}
     </select>
-    <select id="findById" resultType="com.kaishengit.pojo.Task">
+    <select id="findById" resultType="com.hong.pojo.Task">
         select * from t_task WHERE id = #{id};
     </select>
 

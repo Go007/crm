@@ -2,7 +2,7 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.kaishengit.mapper.UserMapper">
+<mapper namespace="com.hong.mapper.UserMapper">
 
     <cache/>
     <insert id="save">
@@ -68,14 +68,14 @@
             </if>
         </where>
     </select>
-    <select id="findById" resultType="com.kaishengit.pojo.User">
+    <select id="findById" resultType="com.hong.pojo.User">
         SELECT * FROM t_user WHERE id = #{id}
     </select>
-    <select id="findAll" resultType="com.kaishengit.pojo.User">
+    <select id="findAll" resultType="com.hong.pojo.User">
         SELECT * FROM t_user
     </select>
 
-    <select id="findUserWithRoleById" resultType="com.kaishengit.pojo.User" resultMap="userMap">
+    <select id="findUserWithRoleById" resultType="com.hong.pojo.User" resultMap="userMap">
         SELECT u.*,
                r.id AS roleid,
                r.rolename
@@ -85,7 +85,7 @@
         WHERE u.id = #{id}
     </select>
 
-    <select id="findUserWithRoleList" resultType="com.kaishengit.pojo.User" resultMap="userMap">
+    <select id="findUserWithRoleList" resultType="com.hong.pojo.User" resultMap="userMap">
         SELECT u.*,r.id AS roleid,
         r.rolename
         FROM  t_user AS u
@@ -117,6 +117,6 @@
         <result property="createtime" column="createtime"/>
         <result property="tel" column="tel"/>
         <result property="state" column="state"/>
-        <collection property="roleList" ofType="Role" column="id" select="com.kaishengit.mapper.RoleMapper.findByUserId"/>
+        <collection property="roleList" ofType="Role" column="id" select="com.hong.mapper.RoleMapper.findByUserId"/>
     </resultMap>
 </mapper>

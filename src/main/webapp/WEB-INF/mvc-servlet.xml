@@ -8,7 +8,7 @@
     <context:property-placeholder location="classpath:config.properties"/>
 
     <!--自动扫描Controller,因为applicationContext.xml中排出了扫描@Controller层,导致在Controller层中读取不到config。properties，所以这里要再读一下-->
-    <context:component-scan base-package="com.kaishengit.controller"/>
+    <context:component-scan base-package="com.hong.controller"/>
 
     <!--基于注解的Controller-->
     <mvc:annotation-driven>

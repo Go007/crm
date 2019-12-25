@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.kaishengit.mapper.SalesMapper">
+<mapper namespace="com.hong.mapper.SalesMapper">
 
     <cache/>
 
@@ -59,10 +59,10 @@
             </if>
         </where>
     </select>
-    <select id="findByCustId" resultType="com.kaishengit.pojo.Sales">
+    <select id="findByCustId" resultType="com.hong.pojo.Sales">
         SELECT * FROM t_sales WHERE custid = #{custId} order by id desc
     </select>
-    <select id="findById" resultType="com.kaishengit.pojo.Sales">
+    <select id="findById" resultType="com.hong.pojo.Sales">
         SELECT * FROM t_sales WHERE id = #{id}
     </select>
     <select id="findStateCount" resultType="java.lang.Long">
