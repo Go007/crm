@@ -183,7 +183,7 @@
     <dependency>
       <groupId>com.cronutils</groupId>
       <artifactId>cron-utils</artifactId>
-      <version>4.1.0</version>
+      <version>9.1.6</version>
     </dependency>
 
   </dependencies>
